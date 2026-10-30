@@ -1,0 +1,527 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpendSmart - Manage Your Money</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+
+<!-- AUTH SCREEN (shown until login) -->
+<div id="authScreen">
+    <div class="auth-card">
+        <h2>💳 SpendSmart</h2>
+        <p>Login or create a new account to continue.<br>Your cards, expenses and bills are stored safely in the database.</p>
+        <div class="form">
+            <input type="text" id="authUsername" placeholder="Username">
+            <input type="password" id="authPassword" placeholder="Password">
+            <button onclick="doLogin()">Login</button>
+            <button onclick="doRegister()">Register (New Account)</button>
+        </div>
+        <small>A new account starts with demo data (6 bank cards, sample expenses and bills) so you can see everything working. Delete anything you do not want.</small>
+    </div>
+</div>
+
+<div id="appShell" style="display:none">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="brand">
+        <span class="brand-icon">💳</span>
+        <h2>Spend<span>Smart</span></h2>
+    </div>
+
+    <p class="menu-title">MAIN MENU</p>
+
+    <ul>
+        <li class="active" onclick="showPage('dashboard')">
+            🏠 Dashboard
+        </li>
+        <li onclick="showPage('cards')">
+            💳 My Cards
+        </li>
+        <li onclick="showPage('expenses')">
+            📊 Expense Tracker
+        </li>
+        <li onclick="showPage('bills')">
+            🧾 Bill Payments
+        </li>
+        <li onclick="showPage('rewards')">
+            🎁 Rewards
+        </li>
+        <li onclick="showPage('insights')">
+            📈 Spending Insights
+        </li>
+    </ul>
+
+    <div class="sidebar-bottom">
+        <p>Spend wisely. Save more.</p>
+        <small>SpendSmart © 2026</small>
+        <button class="logout-btn" onclick="doLogout()">Logout</button>
+    </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+    <!-- DASHBOARD PAGE -->
+    <section id="dashboard" class="page active">
+
+        <header class="page-header">
+            <div>
+                <h1>💳 SpendSmart</h1>
+                <p>Smart Spending. Better Rewards. Better Savings.</p>
+            </div>
+            <div class="profile">
+                <span>👤</span>
+                <div>
+                    <strong class="userNameLabel">My Account</strong>
+                    <small>Personal Dashboard</small>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a class="active" onclick="showPage('dashboard')">Dashboard</a>
+            <a onclick="showPage('cards')">My Cards</a>
+            <a onclick="showPage('expenses')">Expenses</a>
+            <a onclick="showPage('bills')">Bills</a>
+            <a onclick="showPage('rewards')">Rewards</a>
+            <a onclick="showPage('insights')">Insights</a>
+        </nav>
+
+        <div class="welcome">
+            <div>
+                <h2>Welcome to SpendSmart! 👋</h2>
+                <p>Manage your credit cards, expenses and rewards in one place.</p>
+            </div>
+            <span class="welcome-icon">💰</span>
+        </div>
+
+        <h2 class="section-title">Financial Overview</h2>
+
+        <div class="cards">
+            <div class="box blue">
+                <div class="card-icon">💸</div>
+                <h3>Total Expenses</h3>
+                <h2 id="totalExpenses">₹0</h2>
+                <p>Your total spending</p>
+            </div>
+
+            <div class="box green">
+                <div class="card-icon">💳</div>
+                <h3>My Cards</h3>
+                <h2 id="totalCards">0</h2>
+                <p>Cards in your account</p>
+            </div>
+
+            <div class="box purple">
+                <div class="card-icon">🎁</div>
+                <h3>Total Rewards</h3>
+                <h2 id="totalRewards">0 Points</h2>
+                <p>Available reward points</p>
+            </div>
+
+            <div class="box orange">
+                <div class="card-icon">🧾</div>
+                <h3>Pending Bills</h3>
+                <h2 id="pendingBills">0</h2>
+                <p>Bills waiting for payment</p>
+            </div>
+        </div>
+
+        <div class="content-panel">
+            <h2>Quick Actions</h2>
+            <p>Quickly access your important financial activities.</p>
+
+            <div class="quick-actions">
+                <button onclick="showPage('expenses')">+ Add Expense</button>
+                <button onclick="showPage('cards')">💳 Manage Cards</button>
+                <button onclick="showPage('bills')">🧾 Manage Bills</button>
+            </div>
+        </div>
+
+        <footer class="footer">
+            © 2026 SpendSmart | Smart Spending, Better Future.
+        </footer>
+    </section>
+
+
+    <!-- MY CARDS PAGE -->
+    <section id="cards" class="page">
+
+        <header class="page-header">
+            <div>
+                <h1>💳 SpendSmart</h1>
+                <p>Smart Spending. Better Rewards. Better Savings.</p>
+            </div>
+            <div class="profile">
+                <span>👤</span>
+                <div>
+                    <strong class="userNameLabel">My Account</strong>
+                    <small>Personal Dashboard</small>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a onclick="showPage('dashboard')">Dashboard</a>
+            <a class="active" onclick="showPage('cards')">My Cards</a>
+            <a onclick="showPage('expenses')">Expenses</a>
+            <a onclick="showPage('bills')">Bills</a>
+            <a onclick="showPage('rewards')">Rewards</a>
+            <a onclick="showPage('insights')">Insights</a>
+        </nav>
+
+        <div class="page-intro">
+            <h2>My Credit Cards</h2>
+            <p>Manage all your credit cards and track their benefits.</p>
+        </div>
+
+        <div class="cards" id="cardList"></div>
+
+        <div class="content-panel">
+            <h2>➕ Add Your Own Card</h2>
+            <p>Add your credit card details to manage them in one place.</p>
+
+            <div class="form">
+                <input type="text" id="cardName" placeholder="Card Name">
+                <input type="number" id="cardLimit" placeholder="Credit Limit">
+                <input type="text" id="cardReward" placeholder="Reward Details">
+                <button onclick="addCard()">+ Add Card</button>
+            </div>
+
+            
+        </div>
+
+        <footer class="footer">
+            © 2026 SpendSmart | Manage Your Cards Smartly.
+        </footer>
+    </section>
+
+
+    <!-- EXPENSE TRACKER PAGE -->
+    <section id="expenses" class="page">
+
+        <header class="page-header">
+            <div>
+                <h1>💳 SpendSmart</h1>
+                <p>Smart Spending. Better Rewards. Better Savings.</p>
+            </div>
+            <div class="profile">
+                <span>👤</span>
+                <div>
+                    <strong class="userNameLabel">My Account</strong>
+                    <small>Personal Dashboard</small>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a onclick="showPage('dashboard')">Dashboard</a>
+            <a onclick="showPage('cards')">My Cards</a>
+            <a class="active" onclick="showPage('expenses')">Expenses</a>
+            <a onclick="showPage('bills')">Bills</a>
+            <a onclick="showPage('rewards')">Rewards</a>
+            <a onclick="showPage('insights')">Insights</a>
+        </nav>
+
+        <div class="page-intro">
+            <h2>📊 Expense Tracker</h2>
+            <p>Record, monitor and manage your daily expenses.</p>
+        </div>
+
+        <div class="content-panel">
+            <h2>➕ Add New Expense</h2>
+
+            <div class="form">
+                <input type="text" id="expenseName" placeholder="Expense Name">
+
+                <input type="number" id="expenseAmount" placeholder="Amount">
+
+                <select id="expenseCategory">
+                    <option value="Food">Food</option>
+                    <option value="Shopping">Shopping</option>
+                    <option value="Travel">Travel</option>
+                    <option value="Bills">Bills</option>
+                    <option value="Education">Education</option>
+                    <option value="Other">Other</option>
+                </select>
+
+                <select id="paymentMethod"></select>
+
+                <input type="date" id="expenseDate">
+
+                <button onclick="addExpense()">+ Add Expense</button>
+            </div>
+        </div>
+
+        <div class="content-panel">
+            <h2>My Expenses</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Amount</th>
+                        <th>Category</th>
+                        <th>Payment</th>
+                        <th>Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="expenseList"></tbody>
+            </table>
+        </div>
+
+        <footer class="footer">
+            © 2026 SpendSmart | Track Every Rupee.
+        </footer>
+    </section>
+
+
+    <!-- BILL PAYMENTS PAGE -->
+    <section id="bills" class="page">
+
+        <header class="page-header">
+            <div>
+                <h1>💳 SpendSmart</h1>
+                <p>Smart Spending. Better Rewards. Better Savings.</p>
+            </div>
+            <div class="profile">
+                <span>👤</span>
+                <div>
+                    <strong class="userNameLabel">My Account</strong>
+                    <small>Personal Dashboard</small>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a onclick="showPage('dashboard')">Dashboard</a>
+            <a onclick="showPage('cards')">My Cards</a>
+            <a onclick="showPage('expenses')">Expenses</a>
+            <a class="active" onclick="showPage('bills')">Bills</a>
+            <a onclick="showPage('rewards')">Rewards</a>
+            <a onclick="showPage('insights')">Insights</a>
+        </nav>
+
+        <div class="page-intro">
+            <h2>🧾 Bill Payments</h2>
+            <p>Keep track of your credit card bills, minimum payments and due dates.</p>
+        </div>
+
+        <div class="content-panel">
+            <h2>➕ Add New Bill</h2>
+
+            <div class="form">
+                <input type="text" id="billName" placeholder="Card or Bill Name">
+
+                <input type="number" id="billAmount" placeholder="Total Amount">
+
+                <input type="number" id="minimumAmount" placeholder="Minimum Payable">
+
+                <input type="date" id="billDate">
+
+                <button onclick="addBill()">+ Add Bill</button>
+            </div>
+        </div>
+
+        <div class="content-panel">
+            <h2>My Bills</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Bill Name</th>
+                        <th>Total Amount</th>
+                        <th>Minimum Payable</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody id="billList"></tbody>
+            </table>
+        </div>
+
+        <footer class="footer">
+            © 2026 SpendSmart | Never Miss a Payment.
+        </footer>
+    </section>
+
+
+    <!-- REWARDS PAGE -->
+    <section id="rewards" class="page">
+
+        <header class="page-header">
+            <div>
+                <h1>💳 SpendSmart</h1>
+                <p>Smart Spending. Better Rewards. Better Savings.</p>
+            </div>
+            <div class="profile">
+                <span>👤</span>
+                <div>
+                    <strong class="userNameLabel">My Account</strong>
+                    <small>Personal Dashboard</small>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a onclick="showPage('dashboard')">Dashboard</a>
+            <a onclick="showPage('cards')">My Cards</a>
+            <a onclick="showPage('expenses')">Expenses</a>
+            <a onclick="showPage('bills')">Bills</a>
+            <a class="active" onclick="showPage('rewards')">Rewards</a>
+            <a onclick="showPage('insights')">Insights</a>
+        </nav>
+
+        <div class="page-intro">
+            <h2>🎁 Rewards and Benefits</h2>
+            <p>Discover your estimated cashback, reward points and card benefits.</p>
+        </div>
+
+        <div class="cards">
+            <div class="box purple">
+                <div class="card-icon">🏆</div>
+                <h3>Total Reward Points</h3>
+                <h2 id="rewardPoints">0</h2>
+                <p>Available points</p>
+            </div>
+
+            <div class="box green">
+                <div class="card-icon">💰</div>
+                <h3>Total Cashback</h3>
+                <h2 id="rewardCashback">₹0</h2>
+                <p>Estimated cashback</p>
+            </div>
+
+            <div class="box blue">
+                <div class="card-icon">✈️</div>
+                <h3>Travel Benefits</h3>
+                <h2 id="travelBenefits">—</h2>
+                <p>Selected card benefits</p>
+            </div>
+        </div>
+
+        <div class="content-panel">
+            <h2>Card Benefits</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Card</th>
+                        <th>Benefits</th>
+                    </tr>
+                </thead>
+
+                <tbody id="benefitsList"></tbody>
+            </table>
+        </div>
+
+        <footer class="footer">
+            © 2026 SpendSmart | Earn More Rewards.
+        </footer>
+    </section>
+
+
+    <!-- SPENDING INSIGHTS PAGE -->
+    <section id="insights" class="page">
+
+        <header class="page-header">
+            <div>
+                <h1>💳 SpendSmart</h1>
+                <p>Smart Spending. Better Rewards. Better Savings.</p>
+            </div>
+            <div class="profile">
+                <span>👤</span>
+                <div>
+                    <strong class="userNameLabel">My Account</strong>
+                    <small>Personal Dashboard</small>
+                </div>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a onclick="showPage('dashboard')">Dashboard</a>
+            <a onclick="showPage('cards')">My Cards</a>
+            <a onclick="showPage('expenses')">Expenses</a>
+            <a onclick="showPage('bills')">Bills</a>
+            <a onclick="showPage('rewards')">Rewards</a>
+            <a class="active" onclick="showPage('insights')">Insights</a>
+        </nav>
+
+        <div class="page-intro">
+            <h2>📈 Spending Insights</h2>
+            <p>Understand where your money is going and improve your spending habits.</p>
+        </div>
+
+        <div class="cards">
+
+            <div class="box orange">
+                <div class="card-icon">🍔</div>
+                <h3>Food Expenses</h3>
+                <h2 id="foodTotal">₹0</h2>
+            </div>
+
+            <div class="box blue">
+                <div class="card-icon">🛍️</div>
+                <h3>Shopping Expenses</h3>
+                <h2 id="shoppingTotal">₹0</h2>
+            </div>
+
+            <div class="box green">
+                <div class="card-icon">🚗</div>
+                <h3>Travel Expenses</h3>
+                <h2 id="travelTotal">₹0</h2>
+            </div>
+
+            <div class="box purple">
+                <div class="card-icon">📦</div>
+                <h3>Other Expenses</h3>
+                <h2 id="otherTotal">₹0</h2>
+            </div>
+
+        </div>
+
+        <div class="content-panel">
+            <h2>Smart Spending Tips</h2>
+
+            <div class="tips">
+                <div class="tip">
+                    💡 Compare credit card rewards before making purchases.
+                </div>
+
+                <div class="tip">
+                    💡 Pay your credit card bills before the due date.
+                </div>
+
+                <div class="tip">
+                    💡 Monitor your monthly spending regularly.
+                </div>
+
+                <div class="tip">
+                    💡 Avoid unnecessary expenses and use your credit limit wisely.
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            © 2026 SpendSmart | Make Smarter Financial Decisions.
+        </footer>
+    </section>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
